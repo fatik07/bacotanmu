@@ -18,9 +18,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{--
-    <link rel="stylesheet" href="{{ asset('resources/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('resources/js/app.js') }}"> --}}
+    <script src="./node_modules/preline/dist/preline.js"></script>
 </head>
 
 <body class="bg-primary min-h-screen flex flex-col">
