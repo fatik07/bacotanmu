@@ -13,8 +13,7 @@ class CurhatController extends Controller
      */
     public function index()
     {
-        $curhats = Curhat::latest()->paginate(3);
-        return view('welcome', compact('curhats'));
+        //
     }
 
     /**
@@ -42,7 +41,7 @@ class CurhatController extends Controller
             "tanggal_posting" => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->route('curhat-baru.index')->with('success', 'Bacotanmu telah tersampikan ^_^');
+        return redirect()->route('curhat.index')->with('success', 'Bacotanmu telah tersampikan ^_^');
     }
 
     /**
@@ -79,7 +78,26 @@ class CurhatController extends Controller
 
     public function showAll()
     {
-        $curhats = Curhat::all();
+        $curhats = Curhat::latest()->take(6)->get();
         return view('pages.curhat.list-all', compact('curhats'));
+    }
+
+    public function loadMore(Request $request)
+    {
+        $skip = intval($request->input('skip', 0));
+
+        $curhats = Curhat::latest()->skip($skip)->take(6)->get();
+
+        $showMoreButton = Curhat::count() > ($skip + 6);
+
+        $cardsHtml = '';
+        foreach ($curhats as $curhat) {
+            $cardsHtml .= view('components.card', ['curhat' => $curhat])->render();
+        }
+
+        return response()->json([
+            'curhats' => $cardsHtml,
+            'showMoreButton' => $showMoreButton,
+        ]);
     }
 }

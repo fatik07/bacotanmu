@@ -1,7 +1,7 @@
 <div class="mt-8">
     <div class="flex justify-center gap-7 items-center flex-wrap">
         @foreach ($curhats as $curhat)
-        @include('components.card')
+        @include('components.card', ['curhat' => $curhat])
         @endforeach
     </div>
     <div class="flex justify-center items-center mt-5">
