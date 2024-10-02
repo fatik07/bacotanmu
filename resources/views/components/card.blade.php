@@ -15,9 +15,16 @@
         <p class="mb-3 font-normal text-sm text-gray-900">{{ Str::limit($curhat->isi, 250, ' .....') }}</p>
     </div>
 
-    <div class="absolute bottom-5 left-0 right-0 flex justify-between px-6 text-sm text-gray-500">
+    <div class="absolute bottom-9 left-0 right-0 flex justify-between px-6 text-sm text-gray-500">
         <p>dari: anonymous</p>
         <p>{{ \Carbon\Carbon::parse($curhat->tanggal_posting)->diffForHumans() }}</p>
+    </div>
+
+    <div class="absolute bottom-3 left-0 right-0 px-6">
+        <span
+            class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">Default</span>
+        <span
+            class="bg-pink-100 text-pink-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">Pink</span>
     </div>
 </div>
 
