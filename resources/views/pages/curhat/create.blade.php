@@ -88,13 +88,13 @@
                 const categoryButton = document.createElement('button');
                 categoryButton.setAttribute('id', `category-${category}`);
                 categoryButton.type = 'button';
-                categoryButton.classList.add('py-1', 'px-4', 'inline-flex', 'items-center', 'text-xs', 'font-medium', 'rounded-md', 'border', 'border-gray-400', 'bg-tertiary', 'text-black', 'area-button');
+                categoryButton.classList.add('py-1', 'px-4', 'inline-flex', 'items-center', 'text-xs', 'font-medium', 'rounded-md', 'border', 'border-gray-400', 'bg-tertiary', 'text-black');
                 categoryButton.innerHTML = `${category} <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer remove-category" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                         <path d="M18 6 6 18"></path>
                         <path d="M6 6l12 12"></path>
                     </svg>`;
                 categoryButton.setAttribute('aria-haspopup', 'dialog');
-                categoryButton.setAttribute('aria-expanded', 'false');
+                categoryButton.setAttribute('aria-expanded', 'true');
                 categoryButton.setAttribute('aria-controls', 'hs-slide-up-animation-modal');
                 categoryButton.setAttribute('data-hs-overlay', '#hs-slide-up-animation-modal');
 
@@ -107,8 +107,9 @@
                 });
 
                 categoryButton.addEventListener('click', (e) => {
-                    if (!e.target.closest('.remove-category')) {                        
-                        updateModalCategories();                        
+                    if (!e.target.closest('.remove-category')) {     
+                        alert('something went wrong');   
+                        updateModalCategories();                              
                     }
                 });
             });
@@ -124,10 +125,10 @@
             categoryItems.forEach(item => {
                 const category = item.getAttribute('data-category');
                 if (selectedCategories.includes(category)) {
-                    item.classList.add('bg-blue-500', 'text-white');
+                    item.classList.add('bg-tertiary', 'text-black');
                     item.classList.remove('bg-white', 'text-black');
                 } else {
-                    item.classList.remove('bg-blue-500', 'text-white');
+                    item.classList.remove('bg-tertiary', 'text-black');
                     item.classList.add('bg-white', 'text-black');
                 }
             });
@@ -149,18 +150,12 @@
                     e.target.classList.remove('bg-white', 'text-black');
                 }
             }
-        });        
-
-        // Event listener untuk close modal dan update kategori
-        function closeModalAndUpdateCategories() {
-            modal.classList.add('hidden');
-            updateSelectedCategories();
-        }
+        });
 
         // Event listener untuk klik di luar modal
         window.addEventListener('click', function (event) {            
             if (event.target === document.getElementById('hs-slide-up-animation-modal-backdrop') || event.target === document.getElementById('close-svg')) {
-                closeModalAndUpdateCategories();               
+                updateSelectedCategories();          
             }
         });
     });
