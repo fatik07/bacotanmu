@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\CurhatController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Category;
 use App\Models\Curhat;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $curhats = Curhat::latest()->paginate(3);
-    return view('welcome', compact('curhats'));
+    $categories = Category::all();
+    return view('welcome', compact('curhats', 'categories'));
 })->name('curhat.index');
 
 Route::controller(CurhatController::class)->group(function () {

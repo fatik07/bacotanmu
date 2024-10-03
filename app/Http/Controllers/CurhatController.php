@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Curhat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -79,7 +80,8 @@ class CurhatController extends Controller
     public function showAll()
     {
         $curhats = Curhat::latest()->take(6)->get();
-        return view('pages.curhat.list-all', compact('curhats'));
+        $categories = Category::all();
+        return view('pages.curhat.list-all', compact('curhats', 'categories'));
     }
 
     public function loadMore(Request $request)
@@ -90,9 +92,11 @@ class CurhatController extends Controller
 
         $showMoreButton = Curhat::count() > ($skip + 6);
 
+        $categories = Category::all();
+
         $cardsHtml = '';
         foreach ($curhats as $curhat) {
-            $cardsHtml .= view('components.card', ['curhat' => $curhat])->render();
+            $cardsHtml .= view('components.card', ['curhat' => $curhat, 'categories' => $categories])->render();
         }
 
         return response()->json([
