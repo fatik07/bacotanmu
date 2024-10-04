@@ -50,7 +50,10 @@ class CurhatController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $curhat = Curhat::find($id);
+        $categories = Category::all();
+
+        return view('pages.curhat.detail', compact('curhat', 'categories'));
     }
 
     /**

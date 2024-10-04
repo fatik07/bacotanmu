@@ -1,4 +1,4 @@
-<div
+<a href="/curhat-detail/{{ $curhat->id }}"
     class="relative max-w-sm w-full min-h-[270px] p-6 bg-white border-2 border-black rounded-lg shadow-custom font-poppins hover:cursor-pointer group">
     <div class="hover-effect w-full">
         <div class="relative inline-block">
@@ -27,7 +27,7 @@
             $category->name }}</span>
         @endforeach
     </div>
-</div>
+</a>
 
 <style>
     .underline-custom::after {

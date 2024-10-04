@@ -16,6 +16,7 @@ Route::controller(CurhatController::class)->group(function () {
     // Route::get('', 'index')->name('curhat-baru.index');
     Route::get('/curhat-baru', 'create')->name('curhat-baru.create');
     Route::post('/curhat-baru', 'store')->name('curhat-baru.store');
+    Route::get('/curhat-detail/{id}', 'show')->name('curhat-detail.show');
     Route::get('/curhat-semua', 'showAll')->name('curhat-baru.show-all');
     Route::get('/load-more-curhats', [CurhatController::class, 'loadMore'])->name('curhats.loadMore');
 
