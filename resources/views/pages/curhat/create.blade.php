@@ -40,12 +40,12 @@
                 <h3 id="hs-slide-up-animation-modal-label" class="font-bold text-gray-800">
                     Cari Kategori
                 </h3>
-                <button type="button"
+                <button type="button" id="close-svg"
                     class="hs-dropup-toggle size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
                     aria-label="Close" data-hs-overlay="#hs-slide-up-animation-modal">
-                    <svg id="close-svg" class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M18 6 6 18"></path>
                         <path d="m6 6 12 12"></path>
                     </svg>
@@ -53,7 +53,6 @@
             </div>
             <div class="p-4 overflow-y-auto">
                 <div id="categories-list">
-                    <!-- Example kategori, bisa digenerate secara dinamis -->
                     <div class="category-item py-2 px-4 inline-flex items-center gap-x-2 text-xs font-medium rounded-2xl border border-gray-400 bg-white text-black focus:outline-none focus:bg-gray-100 disabled:opacity-50 hover:cursor-pointer"
                         data-category="kerja">
                         kerja
@@ -94,7 +93,7 @@
                         <path d="M6 6l12 12"></path>
                     </svg>`;
                 categoryButton.setAttribute('aria-haspopup', 'dialog');
-                categoryButton.setAttribute('aria-expanded', 'true');
+                categoryButton.setAttribute('aria-expanded', 'false');
                 categoryButton.setAttribute('aria-controls', 'hs-slide-up-animation-modal');
                 categoryButton.setAttribute('data-hs-overlay', '#hs-slide-up-animation-modal');
 
@@ -107,9 +106,28 @@
                 });
 
                 categoryButton.addEventListener('click', (e) => {
-                    if (!e.target.closest('.remove-category')) {     
-                        alert('something went wrong');   
-                        updateModalCategories();                              
+                    if (!e.target.closest('.remove-category')) {                             
+                        const backdrop = document.createElement('div');
+                        backdrop.id = 'hs-slide-up-animation-modal-backdrop';
+                        backdrop.style = 'z-index: 79';
+                        backdrop.classList.add('hs-overlay-backdrop', 'transition', 'duration','fixed', 'inset-0', 'bg-gray-900', 'bg-opacity-50', 'dark:bg-opacity-80', 'dark:bg-neutral-900');
+                        document.body.appendChild(backdrop);
+
+                        document.body.classList.add('overflow-hidden');
+
+                        categoryButton.setAttribute('aria-expanded', 'true');
+
+                        modal.classList.remove('hidden'); 
+                        modal.classList.add('open'); 
+                        modal.classList.add('opened'); 
+                        modal.setAttribute('aria-overlay', 'true');
+                        modal.setAttribute('tabindex', '-1');
+
+                        updateModalCategories();
+
+                        backdrop.addEventListener('click', closeModalAndUpdateCategories);
+                        
+                        document.getElementById('close-svg').addEventListener('click', closeModalAndUpdateCategories);
                     }
                 });
             });
@@ -132,6 +150,16 @@
                     item.classList.add('bg-white', 'text-black');
                 }
             });
+        }
+
+        function closeModalAndUpdateCategories() {
+            modal.classList.add('hidden'); 
+            modal.classList.remove('open'); 
+            modal.classList.remove('opened'); 
+            modal.setAttribute('aria-overlay', 'false');
+            document.body.classList.remove('overflow-hidden');
+            document.getElementById('hs-slide-up-animation-modal-backdrop').remove(); 
+            updateSelectedCategories();
         }
         
         categoriesList.addEventListener('click', (e) => {
