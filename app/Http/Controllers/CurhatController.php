@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Curhat;
+use App\Models\CurhatCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class CurhatController extends Controller
      */
     public function index()
     {
-        //
+        $curhats = Curhat::with('categories')->latest()->paginate(3);
+        return view('welcome', compact('curhats'));
     }
 
     /**
@@ -22,7 +24,8 @@ class CurhatController extends Controller
      */
     public function create()
     {
-        return view('pages.curhat.create');
+        $categories = Category::all();
+        return view('pages.curhat.create', compact('categories'));
     }
 
     /**
@@ -35,12 +38,21 @@ class CurhatController extends Controller
             "tanggal_posting" => "nullable|date",
             "jumlah_like" => "nullable|integer",
             "jumlah_komentar" => "nullable|integer",
+            'category_id' => 'nullable|exists:categories,id',
+            'curhat_id' => 'nullable|exists:curhats,id',
         ]);
 
-        Curhat::create([
+        $curhat = Curhat::create([
             "isi" => $request->isi,
             "tanggal_posting" => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
+        foreach ($request->category_id as $categoryId) {
+            CurhatCategory::create([
+                'curhat_id' => $curhat->id,
+                'category_id' => $categoryId,
+            ]);
+        }
 
         return redirect()->route('curhat.index')->with('success', 'Bacotanmu telah tersampikan ^_^');
     }
@@ -52,6 +64,7 @@ class CurhatController extends Controller
     {
         $curhat = Curhat::find($id);
         $categories = Category::all();
+        // $curhat = Curhat::with('categories')->findOrFail($id);
 
         return view('pages.curhat.detail', compact('curhat', 'categories'));
     }
@@ -82,9 +95,9 @@ class CurhatController extends Controller
 
     public function showAll()
     {
-        $curhats = Curhat::latest()->take(6)->get();
-        $categories = Category::all();
-        return view('pages.curhat.list-all', compact('curhats', 'categories'));
+        $curhats = Curhat::with('categories')->latest()->take(6)->get();
+        // $categories = Category::all();
+        return view('pages.curhat.list-all', compact('curhats'));
     }
 
     public function loadMore(Request $request)

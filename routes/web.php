@@ -2,18 +2,10 @@
 
 use App\Http\Controllers\CurhatController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Category;
-use App\Models\Curhat;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $curhats = Curhat::latest()->paginate(3);
-    $categories = Category::all();
-    return view('welcome', compact('curhats', 'categories'));
-})->name('curhat.index');
-
 Route::controller(CurhatController::class)->group(function () {
-    // Route::get('', 'index')->name('curhat-baru.index');
+    Route::get('', 'index')->name('curhat-baru.index');
     Route::get('/curhat-baru', 'create')->name('curhat-baru.create');
     Route::post('/curhat-baru', 'store')->name('curhat-baru.store');
     Route::get('/curhat-detail/{id}', 'show')->name('curhat-detail.show');
