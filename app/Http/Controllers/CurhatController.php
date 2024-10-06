@@ -38,8 +38,11 @@ class CurhatController extends Controller
             "tanggal_posting" => "nullable|date",
             "jumlah_like" => "nullable|integer",
             "jumlah_komentar" => "nullable|integer",
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'required|exists:categories,id|array|min:1|max:4',
             'curhat_id' => 'nullable|exists:curhats,id',
+        ], [
+            'category_id' => 'The cateogry field is required.',
+            'category_id.max' => 'You can only select up to 4 categories.',
         ]);
 
         $curhat = Curhat::create([
