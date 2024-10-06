@@ -9,7 +9,7 @@
 <div class="mt-9">
     <div id="curhat-container" class="flex justify-center gap-7 items-center flex-wrap">
         @foreach ($curhats as $curhat)
-        @include('components.card', ['curhat' => $curhat])
+        @include('components.card')
         @endforeach
     </div>
 

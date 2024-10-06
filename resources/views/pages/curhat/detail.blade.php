@@ -24,10 +24,10 @@
         </div>
 
         <div class="absolute bottom-3 left-0 right-0 px-6">
-            @foreach ($categories as $category)
+            @foreach ($curhat->categories as $tag)
             <span class="text-white text-xs font-medium px-2.5 py-0.5 rounded"
-                style="background-color: {{ $category->warna }}">{{
-                $category->name }}</span>
+                style="background-color: {{ $tag->warna }}">{{
+                $tag->name }}</span>
             @endforeach
         </div>
     </div>
