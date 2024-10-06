@@ -14,4 +14,9 @@ class Curhat extends Model
     protected $fillable = ['isi', 'tanggal_posting', 'jumlah_like', 'jumlah_komentar'];
 
     const CREATED_AT = 'tanggal_posting';
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'curhat_categories', 'curhat_id', 'category_id');
+    }
 }

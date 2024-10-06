@@ -13,11 +13,17 @@ class Category extends Model
 
     protected $fillable = ['name', 'warna'];
 
+    public function curhats()
+    {
+        return $this->belongsToMany(Curhat::class, 'curhat_categories', 'category_id', 'curhat_id');
+
+    }
+
     protected static function booted()
     {
         static::creating(function ($model) {
             if (empty($model->warna)) {
-                $model->warna = '#DF2A7C'; // Nilai default
+                $model->warna = '#DF2A7C';
             }
         });
     }
