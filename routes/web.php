@@ -10,8 +10,9 @@ Route::controller(CurhatController::class)->group(function () {
     Route::post('/curhat-baru', 'store')->name('curhat-baru.store');
     Route::get('/curhat-detail/{id}', 'show')->name('curhat-detail.show');
     Route::get('/curhat-semua', 'showAll')->name('curhat-baru.show-all');
-    Route::get('/load-more-curhats', [CurhatController::class, 'loadMore'])->name('curhats.loadMore');
 
+    Route::get('/load-more-curhats', [CurhatController::class, 'loadMore'])->name('curhats.loadMore');
+    Route::post('/filter-curhats', [CurhatController::class, 'filterCurhats']);
 });
 
 Route::get('/dashboard', function () {

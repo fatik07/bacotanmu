@@ -14,7 +14,7 @@
         id="category-container">
 
         @forelse ($categories as $category)
-        <x-button
+        <x-button data-category-id="{{ $category->id }}"
             color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
             {{ $category->name }}
         </x-button>
@@ -37,7 +37,6 @@
     </x-button>
 
 </div>
-
 
 <style>
     /* Hilangkan scrollbar yang muncul */
@@ -88,66 +87,74 @@
         const scrollLeftButton = document.getElementById('scroll-left');
         const scrollRightButton = document.getElementById('scroll-right');
         const scrollAmount = 200;
-
+        
         const categoryButtons = document.querySelectorAll('.category-button');
+        let activeCategory = null;
         
         function checkScrollPosition() {
             const maxScrollLeft = container.scrollWidth - container.clientWidth;
-           
             if (container.scrollWidth <= container.clientWidth) {
                 container.classList.add('no-fade');
             } else {
                 container.classList.remove('no-fade');
             }
-
-            // Kontrol tombol panah kiri
-            if (container.scrollLeft === 0) {
-                scrollLeftButton.style.opacity = '0.5';
-                scrollLeftButton.style.pointerEvents = 'none';
-            } else {
-                scrollLeftButton.style.opacity = '1';
-                scrollLeftButton.style.pointerEvents = 'auto';
-            }
-
-            // Kontrol tombol panah kanan
-            if (container.scrollLeft >= maxScrollLeft) {
-                scrollRightButton.style.opacity = '0.5';
-                scrollRightButton.style.pointerEvents = 'none';
-            } else {
-                scrollRightButton.style.opacity = '1';
-                scrollRightButton.style.pointerEvents = 'auto';
-            }
+            scrollLeftButton.style.opacity = container.scrollLeft === 0 ? '0.5' : '1';
+            scrollLeftButton.style.pointerEvents = container.scrollLeft === 0 ? 'none' : 'auto';
+            scrollRightButton.style.opacity = container.scrollLeft >= maxScrollLeft ? '0.5' : '1';
+            scrollRightButton.style.pointerEvents = container.scrollLeft >= maxScrollLeft ? 'none' : 'auto';
         }
-    
+
+        // Fungsi untuk mengatur kategori aktif
         function setActiveCategory(button) {
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
+            if (activeCategory === button) {
+                activeCategory.classList.remove('active');
+                activeCategory = null;
+            } else {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeCategory = button;
+            }
         }
-        
+
+        // Event listener untuk setiap tombol kategori
         categoryButtons.forEach(button => {
             button.addEventListener('click', function () {
+                const categoryId = activeCategory === button ? null : this.getAttribute('data-category-id');
                 setActiveCategory(button);
+
+                document.getElementById('curhat-container').innerHTML = '<p>Loading...</p>';
+                fetch(`/filter-curhats`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ category_id: categoryId })
+                })
+                .then(response => response.json())
+                .then(data => {                    
+                    document.getElementById('curhat-container').innerHTML = data.html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('curhat-container').innerHTML = '<p>Error loading curhats.</p>';
+                });
             });
         });
 
+        // Scroll horizontal ke kiri
         scrollLeftButton.addEventListener('click', function() {
-            container.scrollBy({
-                left: -scrollAmount,
-                behavior: 'smooth'
-            });
-            setTimeout(checkScrollPosition, 300);
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
         });
 
+        // Scroll horizontal ke kanan
         scrollRightButton.addEventListener('click', function() {
-            container.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
-            setTimeout(checkScrollPosition, 300);
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         });
 
-        container.addEventListener('scroll', checkScrollPosition);    
-        checkScrollPosition(); 
+        // Event listener untuk scroll container
+        container.addEventListener('scroll', checkScrollPosition);
+        checkScrollPosition();
         window.addEventListener('resize', checkScrollPosition);
     });
 </script>

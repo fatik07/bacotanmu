@@ -123,4 +123,24 @@ class CurhatController extends Controller
             'showMoreButton' => $showMoreButton,
         ]);
     }
+
+    public function filterCurhats(Request $request)
+    {
+        $categoryId = $request->category_id;
+
+        if ($categoryId) {
+            $curhats = Curhat::whereHas('categories', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })->with('categories')->get();
+        } else {
+            $curhats = Curhat::with('categories')->latest()->take(6)->get();
+        }
+
+        $html = '';
+        foreach ($curhats as $curhat) {
+            $html .= view('components.card', ['curhat' => $curhat])->render();
+        }
+
+        return response()->json(['html' => $html]);
+    }
 }
