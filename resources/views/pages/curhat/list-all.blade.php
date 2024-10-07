@@ -3,7 +3,8 @@
 @section('content')
 
 <div class="mt-8">
-    <x-category></x-category>
+    {{-- <x-category></x-category> --}}
+    @include('components.category')
 </div>
 
 <div class="mt-9">

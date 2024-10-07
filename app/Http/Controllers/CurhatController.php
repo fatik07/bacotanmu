@@ -99,8 +99,8 @@ class CurhatController extends Controller
     public function showAll()
     {
         $curhats = Curhat::with('categories')->latest()->take(6)->get();
-        // $categories = Category::all();
-        return view('pages.curhat.list-all', compact('curhats'));
+        $categories = Category::all();
+        return view('pages.curhat.list-all', compact('curhats', 'categories'));
     }
 
     public function loadMore(Request $request)

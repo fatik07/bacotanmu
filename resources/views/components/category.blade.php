@@ -12,43 +12,18 @@
 
     <div class="flex gap-3 overflow-x-auto hide-scrollbar transition-opacity duration-300 relative mask-fade"
         id="category-container">
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 1
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 2
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
-        <x-button
-            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
-            Kategori 3
-        </x-button>
 
+        @forelse ($categories as $category)
+        <x-button
+            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
+            {{ $category->name }}
+        </x-button>
+        @empty
+        <x-button
+            color="category-button bg-white text-black hover:bg-gray-300 font-comfortaa flex justify-center items-center px-3 py-1 text-sm">
+            tidak ada kategori
+        </x-button>
+        @endforelse
     </div>
 
     <x-button id="scroll-right"
