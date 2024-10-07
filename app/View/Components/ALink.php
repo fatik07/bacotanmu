@@ -14,7 +14,7 @@ class ALink extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($url = '#', $color = 'bg-gray-800 text-white hover:bg-gray-700')
+    public function __construct($url = '', $color = 'bg-gray-800 text-white hover:bg-gray-700')
     {
         $this->url = $url;
         $this->color = $color;
