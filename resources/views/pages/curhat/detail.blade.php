@@ -34,13 +34,16 @@
 </div>
 
 <div class="flex flex-col justify-center items-center mt-4 gap-2">
-    <span class="w-full md:w-3/4 lg:w-1/2 m-auto">5,000 komentar</span>
+    <span class="w-full md:w-3/4 lg:w-1/2 m-auto">{{ $comments->count() }} komentar</span>
     <x-comment name=""></x-comment>
-    <x-comment-detail></x-comment-detail>
-    <x-comment-detail></x-comment-detail>
-    <x-comment-detail></x-comment-detail>
+    @forelse ($comments as $comment)
+    @include('components.comment-detail')
+    @empty
+    <div class="text-center text-red-500">
+        Tidak ada komentar
+    </div>
+    @endforelse
 </div>
-
 
 @endsection
 

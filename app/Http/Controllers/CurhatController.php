@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Curhat;
 use App\Models\CurhatCategory;
 use Carbon\Carbon;
@@ -66,10 +67,9 @@ class CurhatController extends Controller
     public function show(string $id)
     {
         $curhat = Curhat::find($id);
-        $categories = Category::all();
-        // $curhat = Curhat::with('categories')->findOrFail($id);
+        $comments = Comment::latest()->where('curhat_id', $id)->get();
 
-        return view('pages.curhat.detail', compact('curhat', 'categories'));
+        return view('pages.curhat.detail', compact('curhat', 'comments'));
     }
 
     /**
