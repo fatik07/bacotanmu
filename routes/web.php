@@ -1,10 +1,23 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CurhatController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(CurhatController::class)->group(function () {
+    Route::get('', 'index')->name('curhat.index');
+    Route::get('/curhat-baru', 'create')->name('curhat-baru.create');
+    Route::post('/curhat-baru', 'store')->name('curhat-baru.store');
+    Route::get('/curhat-detail/{id}', 'show')->name('curhat-detail.show');
+    Route::get('/curhat-semua', 'showAll')->name('curhat-baru.show-all');
+
+    Route::get('/load-more-curhats', [CurhatController::class, 'loadMore'])->name('curhats.loadMore');
+    Route::post('/filter-curhats', [CurhatController::class, 'filterCurhats']);
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::post('/curhat-detail/{id}', 'store')->name('comment.store');
 });
 
 Route::get('/dashboard', function () {
@@ -17,4 +30,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

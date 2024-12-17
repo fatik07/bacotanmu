@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('curhat_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('curhat_id')->constrained()->cascadeOnDelete();
-            $table->text('isi');
-            $table->dateTime('tanggal_komentar');
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('curhat_categories');
     }
 };
